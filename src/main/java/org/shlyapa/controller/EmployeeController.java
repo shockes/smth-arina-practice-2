@@ -17,9 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-/**
- * Контроллер: принимает HTTP-запросы и возвращает шаблоны Thymeleaf.
- */
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -31,7 +28,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    /** GET /employees — список сотрудников с поиском и фильтром по активности. */
     @GetMapping
     public String list(@RequestParam(value = "name", required = false) String name,
                        @RequestParam(value = "active", required = false) String active,
@@ -44,7 +40,6 @@ public class EmployeeController {
         return "employees-list";
     }
 
-    /** GET /employees/add — пустая форма добавления. */
     @GetMapping("/add")
     public String showAddForm(Model model) {
         if (!model.containsAttribute("employee")) {
@@ -54,7 +49,6 @@ public class EmployeeController {
         return "employee-form";
     }
 
-    /** POST /employees/add — сохранение нового сотрудника с валидацией. */
     @PostMapping("/add")
     public String add(@ModelAttribute("employee") @Valid Employee employee,
                       BindingResult bindingResult,
@@ -78,7 +72,6 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
-    /** GET /employees/edit/{id} — форма редактирования, заполненная данными сотрудника. */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Employee employee;
@@ -95,7 +88,6 @@ public class EmployeeController {
         return "employee-form";
     }
 
-    /** POST /employees/edit/{id} — сохранение изменений с валидацией. */
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id,
                        @ModelAttribute("employee") @Valid Employee employee,
@@ -130,7 +122,6 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
-    /** POST /employees/delete/{id} — удаление и редирект на список. */
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {

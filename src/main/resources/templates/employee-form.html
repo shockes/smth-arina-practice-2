@@ -27,12 +27,10 @@
 <h1 th:text="${editing} ? 'Редактирование сотрудника' : 'Добавление сотрудника'">Форма</h1>
 
 <div class="card">
-    <!-- Одна и та же форма работает и для добавления, и для редактирования -->
     <form th:object="${employee}"
           th:action="${editing} ? @{/employees/edit/{id}(id=${employee.id})} : @{/employees/add}"
           method="post" novalidate>
 
-        <!-- Скрытое поле id нужно, чтобы при ошибке валидирования объект вернулся с id -->
         <input type="hidden" th:field="*{id}">
 
         <div class="field">

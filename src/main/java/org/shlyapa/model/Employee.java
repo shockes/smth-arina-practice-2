@@ -16,9 +16,6 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * Модель данных «Сотрудник» — соответствует таблице EMPLOYEE в БД.
- */
 @Entity
 @Table(name = "employee")
 public class Employee {

@@ -8,10 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
 
-/**
- * Заполняет базу тестовыми сотрудниками при старте приложения,
- * чтобы список не был пустым и можно было сразу проверить поиск и фильтры.
- */
 @Configuration
 public class DataLoader {
 
