@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Не найдено</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; background: #f5f6f8; text-align: center; }
+        .card { background: #fff; padding: 30px; border-radius: 8px; display: inline-block;
+                box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+        .btn { display: inline-block; margin-top: 14px; padding: 8px 16px; border-radius: 4px;
+               background: #2f6feb; color: #fff; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Сотрудник не найден</h1>
+    <p th:text="${error}"></p>
+    <a class="btn" th:href="@{/employees}">Вернуться к списку</a>
+</div>
+</body>
+</html>

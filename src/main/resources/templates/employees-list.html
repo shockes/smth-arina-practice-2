@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Учёт сотрудников</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 24px; background: #f5f6f8; color: #222; }
+        h1 { font-size: 24px; margin: 0 0 16px; }
+        .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+        .card { background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+        table { border-collapse: collapse; width: 100%; background: #fff; }
+        th, td { border: 1px solid #e3e6ea; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #eef1f5; }
+        tr:nth-child(even) td { background: #fafbfc; }
+        input[type=text], select { padding: 6px 8px; border: 1px solid #c9ced6; border-radius: 4px; font-size: 14px; }
+        .btn { display: inline-block; padding: 7px 14px; border: none; border-radius: 4px; font-size: 14px;
+               text-decoration: none; cursor: pointer; background: #2f6feb; color: #fff; }
+        .btn-add { background: #22a06b; }
+        .btn-edit { background: #f0a020; color: #fff; }
+        .btn-del { background: #e04a4a; color: #fff; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .badge-on { background: #dcf5e6; color: #1c7a4b; }
+        .badge-off { background: #fde3e3; color: #b02a2a; }
+        .flash { padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
+        .flash-ok { background: #dcf5e6; color: #1c7a4b; }
+        .flash-err { background: #fde3e3; color: #b02a2a; }
+        .muted { color: #6b7280; font-size: 13px; }
+        form.inline { display: inline; }
+    </style>
+</head>
+<body>
+<h1>Учёт сотрудников</h1>
+
+<div class="flash flash-ok" th:if="${message}" th:text="${message}"></div>
+<div class="flash flash-err" th:if="${error}" th:text="${error}"></div>
+
+<div class="card toolbar">
+    <form th:action="@{/employees}" method="get" class="toolbar">
+        <input type="text" name="name" th:value="${name}" placeholder="Поиск по ФИО" size="28">
+        <select name="active">
+            <option value="all" th:selected="${active == 'all'}">Все</option>
+            <option value="true" th:selected="${active == 'true'}">Активные</option>
+            <option value="false" th:selected="${active == 'false'}">Неактивные</option>
+        </select>
+        <button type="submit" class="btn">Найти</button>
+        <a class="btn btn-add" th:href="@{/employees/add}">Добавить сотрудника</a>
+    </form>
+</div>
+
+<p class="muted">Найдено записей: <span th:text="${count}">0</span></p>
+
+<div class="card">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Должность</th>
+            <th>Зарплата</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${employees}">
+            <td th:text="${e.id}"></td>
+            <td th:text="${e.fullName}"></td>
+            <td th:text="${e.email}"></td>
+            <td th:text="${e.phone}"></td>
+            <td th:text="${e.position}"></td>
+            <td th:text="${#numbers.formatDecimal(e.salary, 1, 'POINT', 2, 'COMMA')} + ' ₽'"></td>
+            <td>
+                <span class="badge badge-on" th:if="${e.active}">Активен</span>
+                <span class="badge badge-off" th:unless="${e.active}">Неактивен</span>
+            </td>
+            <td>
+                <a class="btn btn-edit" th:href="@{/employees/edit/{id}(id=${e.id})}">Изменить</a>
+                <form class="inline" th:action="@{/employees/delete/{id}(id=${e.id})}" method="post"
+                      onsubmit="return confirm('Удалить сотрудника?');">
+                    <button type="submit" class="btn btn-del">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(employees)}">
+            <td colspan="8" class="muted" style="text-align:center; padding:20px;">
+                Сотрудники не найдены
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p class="muted" style="margin-top:14px;">
+    Консоль H2: <a href="http://localhost:8080/h2-console" target="_blank">/h2-console</a>
+    (JDBC URL: jdbc:h2:mem:testdb, пользователь sa, пароль пустой)
+</p>
+</body>
+</html>
